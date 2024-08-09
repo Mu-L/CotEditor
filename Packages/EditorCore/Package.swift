@@ -1,5 +1,4 @@
 // swift-tools-version: 6.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
@@ -48,7 +47,7 @@ let package = Package(
         .library(name: "UnicodeNormalization", targets: ["UnicodeNormalization"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/realm/SwiftLint", from: Version(0, 55, 0)),
+        .package(url: "https://github.com/realm/SwiftLint", from: Version(0, 56, 0)),
     ],
     targets: [
         .target(name: "CharacterInfo", resources: [.process("Resources")]),
@@ -99,13 +98,12 @@ let package = Package(
         .testTarget(name: "UnicodeNormalizationTests", dependencies: ["UnicodeNormalization"]),
         
         .target(name: "ValueRange"),
-    ],
-    swiftLanguageVersions: [.v6]
+    ]
 )
 
 
 for target in package.targets {
     target.plugins = [
-        .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
+        .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint"),
     ]
 }

@@ -41,27 +41,28 @@ struct WhatsNewView: View {
                 .accessibilityAddTraits(.isHeader)
                 .accessibilityHeading(.h1)
             
-            HStack(alignment: .top, spacing: 20) {
+            VStack(alignment: .leading, spacing: 16) {
                 ForEach(NewFeature.allCases, id: \.self) { feature in
-                    VStack(spacing: 8) {
+                    HStack {
                         feature.image
-                            .font(.system(size: 56, weight: .thin))
+                            .font(.system(size: 48, weight: .thin))
                             .foregroundStyle(.tint)
-                            .frame(height: 60)
+                            .frame(width: 64, alignment: .center)
                         
-                        Text(feature.label)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .accessibilityAddTraits(.isHeader)
-                            .accessibilityHeading(.h2)
-                        
-                        Text(feature.description)
-                            .foregroundStyle(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        feature.supplementalView
+                        VStack(alignment: .leading) {
+                            Text(feature.label)
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .accessibilityAddTraits(.isHeader)
+                                .accessibilityHeading(.h2)
+                            
+                            Text(feature.description)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .opacity(0.75)
+                            
+                            feature.supplementalView
+                        }
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
             
@@ -86,38 +87,17 @@ struct WhatsNewView: View {
             .keyboardShortcut(.cancelAction)
             .buttonStyle(.borderedProminent)
         }
+        .padding(.top, ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 15 ? 0 : 30)  // for balancing with window titlebar space
+        .padding([.horizontal, .bottom])
         .scenePadding()
-        .frame(width: 640, height: 300)
-        .padding(.top, 30)  // for balancing with window titlebar space
-        .ignoresSafeArea()
-        .background()
-    }
-}
-
-
-private struct SectionView<Content: View>: View {
-    
-    var title: String
-    var image: Image
-    @ViewBuilder var content: () -> Content
-    
-    var body: some View {
-        
-        VStack {
-            self.image
-                .font(.system(size: 56, weight: .thin))
-                .foregroundStyle(.tint)
-                .frame(height: 64)
-            
-            Text(self.title)
-                .font(.title3)
-                .fontWeight(.medium)
-                .accessibilityAddTraits(.isHeader)
-                .accessibilityHeading(.h2)
-                .padding(.vertical, 2)
-            
-            self.content()
-                .fixedSize(horizontal: false, vertical: true)
+        .frame(width: 580)
+        .ignoresSafeArea(edges: .top)
+        .background {
+            Image(systemName: "gearshape.2")
+                .font(.system(size: 750, weight: .ultraLight))
+                .rotationEffect(.degrees(180))
+                .opacity(0.02)
+                .background()
         }
     }
 }
@@ -127,18 +107,18 @@ private enum NewFeature: CaseIterable {
     
     static let version = "5.0"
     
-    case macOSSupport
     case folderNavigation
+    case macOSSupport
     case donation
     
     
     var image: Image {
         
         switch self {
-            case .macOSSupport:
-                Image(systemName: "sparkles")
             case .folderNavigation:
                 Image(systemName: "folder")
+            case .macOSSupport:
+                Image(systemName: "sparkles")
             case .donation:
                 Image(.bagCoffee)
         }
@@ -148,12 +128,12 @@ private enum NewFeature: CaseIterable {
     var label: String {
         
         switch self {
-            case .macOSSupport:
-                String(localized: "NewFeature.macOSSupport.label",
-                       defaultValue: "macOS 15 Sequoia Support", table: "WhatsNew")
             case .folderNavigation:
                 String(localized: "NewFeature.folderNavigation.label",
                        defaultValue: "Folder Navigation", table: "WhatsNew")
+            case .macOSSupport:
+                String(localized: "NewFeature.macOSSupport.label",
+                       defaultValue: "macOS 15 Sequoia Support", table: "WhatsNew")
             case .donation:
                 String(localized: "NewFeature.donation.label",
                        defaultValue: "Donation", table: "WhatsNew")
@@ -164,12 +144,12 @@ private enum NewFeature: CaseIterable {
     var description: String {
         
         switch self {
-            case .macOSSupport:
-                String(localized: "NewFeature.macOSSupport.description",
-                       defaultValue: "Work perfectly with new macOS 15.", table: "WhatsNew")
             case .folderNavigation:
                 String(localized: "NewFeature.folderNavigation.description",
                        defaultValue: "Open a folder in CotEditor to navigate its contents in the new sidebar.", table: "WhatsNew")
+            case .macOSSupport:
+                String(localized: "NewFeature.macOSSupport.description",
+                       defaultValue: "Work perfectly with new macOS 15.", table: "WhatsNew")
             case .donation:
                 String(localized: "NewFeature.donation.description",
                        defaultValue: "Support the CotEditor project by offering coffee to the developer.", table: "WhatsNew")
@@ -192,6 +172,7 @@ private enum NewFeature: CaseIterable {
                 }
                 .buttonStyle(.capsule)
                 #endif
+                
             default:
                 EmptyView()
         }
