@@ -89,6 +89,7 @@ struct FindMatchesCache {
         static let name = Notification.Name("TextFinderDidFind")
         
         var result: FindResult
+        var clientIdentifier: ObjectIdentifier
     }
     
     
