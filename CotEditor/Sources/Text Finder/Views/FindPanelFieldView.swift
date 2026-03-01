@@ -8,7 +8,7 @@
 //
 //  ---------------------------------------------------------------------------
 //
-//  © 2014-2025 1024jp
+//  © 2014-2026 1024jp
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -160,9 +160,7 @@ struct FindPanelFieldView: View {
         .task {
             for await notification in NotificationCenter.default.notifications(named: TextFinder.DidFindMessage.name) {
                 self.result = notification.userInfo?["result"] as? FindResult
-                if let finder = notification.object as? TextFinder {
-                    self.resultClientIdentifier = finder.client.map(ObjectIdentifier.init)
-                }
+                self.resultClientIdentifier = notification.userInfo?["clientIdentifier"] as? ObjectIdentifier
             }
         }
         .task {

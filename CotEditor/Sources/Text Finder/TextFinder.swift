@@ -299,12 +299,15 @@ struct FindMatchesCache {
     /// Selects all matched strings.
     private func selectAll() {
         
-        guard let textFind = self.prepareTextFind() else { return }
-        guard let matchedRanges = try? textFind.matches else { return }
+        guard
+            let textFind = self.prepareTextFind(),
+            let client = self.client,
+            let matchedRanges = try? textFind.matches
+        else { return }
         
-        self.client.selectedRanges = matchedRanges as [NSValue]
+        client.selectedRanges = matchedRanges as [NSValue]
         
-        self.notify(FindResult(action: .find, count: matchedRanges.count))
+        self.notify(FindResult(action: .find, count: matchedRanges.count), for: client)
         self.settings.noteFindHistory()
     }
     
@@ -562,7 +565,7 @@ struct FindMatchesCache {
         }
         
         let findResult = FindResult(action: .find, count: matches.count, currentMatchIndex: currentMatchIndex, matchedRange: matchedRange)
-        self.notify(findResult)
+        self.notify(findResult, for: client)
         if !isIncremental {
             self.settings.noteFindHistory()
         }
@@ -671,7 +674,7 @@ struct FindMatchesCache {
         
         progress.finish()
         
-        self.notify(FindResult(action: .find, count: matches.count))
+        self.notify(FindResult(action: .find, count: matches.count), for: client)
         
         if showsList {
             let info: [AnyHashable: Any] = ["findString": textFind.findString, "matches": matches, "client": client]
@@ -730,17 +733,21 @@ struct FindMatchesCache {
         
         progress.finish()
         
-        self.notify(FindResult(action: .replace, count: progress.count))
+        self.notify(FindResult(action: .replace, count: progress.count), for: client)
         self.settings.noteReplaceHistory()
     }
     
     
     /// Notifies the find/replacement result to the user.
     ///
-    /// - Parameter result: The find/replacement result.
-    private func notify(_ result: FindResult) {
+    /// - Parameters:
+    ///   - result: The find/replacement result.
+    ///   - client: The text view where performed the find/replacement.
+    private func notify(_ result: FindResult, for client: NSTextView) {
         
-        NotificationCenter.default.post(name: DidFindMessage.name, object: self, userInfo: ["result": result])
+        let identifier = ObjectIdentifier(client)
+        
+        NotificationCenter.default.post(name: DidFindMessage.name, object: self, userInfo: ["result": result, "clientIdentifier": identifier])
         AccessibilityNotification.Announcement(result.accessibilityPositionMessage ?? result.message).post()
     }
 }
