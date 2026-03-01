@@ -60,7 +60,8 @@ actor RegexOutlineParser: OutlineParsing {
             }
             
             let items = try await group.reduce(into: []) { $0 += $1 }
-                .sorted(using: KeyPathComparator(\.range.location))
+                .sorted(using: [KeyPathComparator(\.range.location),
+                                KeyPathComparator(\.range.length)])
                 .removingDuplicateIDs
             
             return policy.normalize(items)
