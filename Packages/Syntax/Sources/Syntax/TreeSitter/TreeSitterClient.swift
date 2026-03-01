@@ -49,6 +49,9 @@ actor TreeSitterClient: IncrementalParsing, HighlightParsing, OutlineParsing {
     /// The ranges affected by pending edits, in UTF-16 units.
     private var pendingAffectedRanges: EditedRangeSet = .init()
     
+    /// Resolves stable outline item identities across successive parses.
+    private var outlineIdentityResolver: OutlineItem.IdentityResolver = .init()
+    
     
     // MARK: Lifecycle
     
@@ -155,9 +158,11 @@ actor TreeSitterClient: IncrementalParsing, HighlightParsing, OutlineParsing {
                 
                 return OutlineItem(title: formattedTitle, range: capture.range, kind: capture.kind, indent: .level(capture.depth))
             }
-            .removingDuplicateIDs
         
-        return policy.normalize(items)
+        let normalizedItems = policy.normalize(items)
+        
+        return self.outlineIdentityResolver.resolve(normalizedItems)
+            .removingDuplicateIDs
     }
     
     

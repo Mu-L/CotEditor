@@ -26,7 +26,7 @@
 
 public import Foundation
 
-public struct OutlineItem: Hashable, Equatable, Sendable {
+public struct OutlineItem: Hashable, Equatable, Sendable, Identifiable {
     
     public struct Style: OptionSet, Hashable, Sendable {
         
@@ -59,6 +59,7 @@ public struct OutlineItem: Hashable, Equatable, Sendable {
     }
     
     
+    public var id: UUID = .init()
     public var title: String
     public var range: NSRange
     public var indent: Indent
@@ -69,8 +70,9 @@ public struct OutlineItem: Hashable, Equatable, Sendable {
     public var isSeparator: Bool  { self.kind == .separator }
     
     
-    public init(title: String, range: NSRange, kind: Syntax.Outline.Kind? = nil, indent: Indent = .level(0)) {
+    public init(title: String, range: NSRange, kind: Syntax.Outline.Kind? = nil, indent: Indent = .level(0), id: UUID = UUID()) {
         
+        self.id = id
         self.title = title
         self.range = range
         self.indent = indent
@@ -78,16 +80,10 @@ public struct OutlineItem: Hashable, Equatable, Sendable {
     }
     
     
-    public static func separator(range: NSRange, indent: Indent = .level(0)) -> Self {
+    public static func separator(range: NSRange, indent: Indent = .level(0), id: UUID = UUID()) -> Self {
         
-        self.init(title: "", range: range, kind: .separator, indent: indent)
+        self.init(title: "", range: range, kind: .separator, indent: indent, id: id)
     }
-}
-
-
-extension OutlineItem: Identifiable {
-    
-    public var id: String  { self.title + self.range.description }
 }
 
 
@@ -166,7 +162,7 @@ extension BidirectionalCollection<OutlineItem> {
 extension BidirectionalCollection where Element: Identifiable {
     
     /// A new array by removing elements that share the same ID.
-    public var removingDuplicateIDs: [Element] {
+    var removingDuplicateIDs: [Element] {
         
         var seenIDs: Set<Element.ID> = []
         var uniqueItems: [Element] = []

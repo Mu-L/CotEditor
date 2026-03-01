@@ -33,6 +33,7 @@ actor RegexOutlineParser: OutlineParsing {
     
     private let extractors: [OutlineExtractor]
     private let policy: OutlinePolicy
+    private var identityResolver: OutlineItem.IdentityResolver = .init()
     
     
     // MARK: Lifecycle
@@ -54,7 +55,7 @@ actor RegexOutlineParser: OutlineParsing {
     /// - Throws: `CancellationError`.
     func parseOutline(in string: String) async throws -> [OutlineItem] {
         
-        try await withThrowingTaskGroup { [extractors, policy] group in
+        let normalizedItems = try await withThrowingTaskGroup { [extractors, policy] group in
             for extractor in extractors {
                 group.addTask { try extractor.items(in: string, range: string.range) }
             }
@@ -62,9 +63,11 @@ actor RegexOutlineParser: OutlineParsing {
             let items = try await group.reduce(into: []) { $0 += $1 }
                 .sorted(using: [KeyPathComparator(\.range.location),
                                 KeyPathComparator(\.range.length)])
-                .removingDuplicateIDs
             
             return policy.normalize(items)
         }
+        
+        return self.identityResolver.resolve(normalizedItems)
+            .removingDuplicateIDs
     }
 }
