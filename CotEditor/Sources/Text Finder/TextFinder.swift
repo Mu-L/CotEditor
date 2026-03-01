@@ -300,8 +300,7 @@ struct FindMatchesCache {
     private func selectAll() {
         
         guard
-            let textFind = self.prepareTextFind(),
-            let client = self.client,
+            let (textFind, client) = self.prepareTextFind(),
             let matchedRanges = try? textFind.matches
         else { return }
         
@@ -476,10 +475,10 @@ struct FindMatchesCache {
     /// Checks the Find action can be performed and alerts if needed.
     ///
     /// - Parameter presentsError: Whether shows error dialog on the find panel.
-    /// - Returns: A TextFind object with the current state, or `nil` if not ready.
-    private func prepareTextFind(presentsError: Bool = true) -> TextFind? {
+    /// - Returns: A TextFind object with the current state and the client used for the preparation, or `nil` if not ready.
+    private func prepareTextFind(presentsError: Bool = true) -> (textFind: TextFind, client: NSTextView)? {
         
-        let client = self.client!
+        guard let client = self.client else { return nil }
         
         // close previous error dialog if any exists
         FindPanelController.shared.window?.attachedSheet?.close()
@@ -494,9 +493,9 @@ struct FindMatchesCache {
         let inSelection = self.settings.inSelection
         let selectedRanges = client.selectedRanges.map(\.rangeValue)
         
+        let textFind: TextFind
         do {
-            return try TextFind(for: string, findString: findString, mode: mode, inSelection: inSelection, selectedRanges: selectedRanges)
-            
+            textFind = try TextFind(for: string, findString: findString, mode: mode, inSelection: inSelection, selectedRanges: selectedRanges)
         } catch {
             guard presentsError else { return nil }
             
@@ -511,6 +510,8 @@ struct FindMatchesCache {
             
             return nil
         }
+        
+        return (textFind, client)
     }
     
     
@@ -524,9 +525,8 @@ struct FindMatchesCache {
         
         assert(forward || !isIncremental)
         
-        guard let textFind = self.prepareTextFind(presentsError: !isIncremental) else { return }
+        guard let (textFind, client) = self.prepareTextFind(presentsError: !isIncremental) else { return }
         
-        let client = self.client!
         let wraps = self.settings.isWrap
         
         let matches = try await self.findMatches(for: textFind)
@@ -575,17 +575,17 @@ struct FindMatchesCache {
     /// Replaces a matched string in selection with replacementString.
     @discardableResult private func replaceSelected() -> Bool {
         
-        guard let textFind = self.prepareTextFind() else { return false }
+        guard let (textFind, client) = self.prepareTextFind() else { return false }
         
         let replacementString = self.settings.replacementString
         
         guard let result = textFind.replace(with: replacementString) else { return false }
         
         // apply replacement to text view
-        let didReplace = self.client.replace(with: result.value, range: result.range,
-                                             selectedRange: NSRange(location: result.range.location,
-                                                                    length: result.value.length),
-                                             actionName: String(localized: "Replace", table: "TextFind"))
+        let didReplace = client.replace(with: result.value, range: result.range,
+                                        selectedRange: NSRange(location: result.range.location,
+                                                               length: result.value.length),
+                                        actionName: String(localized: "Replace", table: "TextFind"))
         
         if didReplace {
             self.invalidateFindMatchesCache()
@@ -602,9 +602,8 @@ struct FindMatchesCache {
     ///   - actionName: The name of the action to display in the progress sheet.
     private func findAll(showsList: Bool, actionName: String) async {
         
-        guard let textFind = self.prepareTextFind() else { return }
+        guard let (textFind, client) = self.prepareTextFind() else { return }
         
-        let client = self.client!
         client.isEditable = false
         defer { client.isEditable = true }
         
@@ -688,9 +687,8 @@ struct FindMatchesCache {
     /// Replaces all matched strings and applies the result to views.
     private func replaceAll() async {
         
-        guard let textFind = self.prepareTextFind() else { return }
+        guard let (textFind, client) = self.prepareTextFind() else { return }
         
-        let client = self.client!
         client.isEditable = false
         defer { client.isEditable = true }
         
