@@ -418,7 +418,7 @@ final class FileBrowserViewController: NSViewController, NSMenuItemValidation {
                 menuItem.isHidden = if targetNodes.count == 1 {
                     self.isFiltering ? targetNodes[0].file.isDirectory : false
                 } else {
-                     true
+                    true
                 }
                 
             case #selector(moveToTrash):
