@@ -129,7 +129,7 @@ private struct ColorCodePanelAccessory: View {
                     self.apply(colorCode: self.colorCode)
                 }
             
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Picker(selection: $type) {
                     Section {
                         ForEach(ColorCodeType.hexTypes, id: \.self) { type in
@@ -148,6 +148,7 @@ private struct ColorCodePanelAccessory: View {
                     self.apply(type: newValue)
                 }
                 .labelsVisibility(.hidden)
+                .buttonSizing(.flexible)
                 
                 Button(String(localized: "Insert", table: "ColorCode", comment: "button label"), action: self.submit)
                     .keyboardShortcut(.defaultAction)

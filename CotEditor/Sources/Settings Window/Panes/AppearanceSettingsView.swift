@@ -159,7 +159,7 @@ struct AppearanceSettingsView: View {
                     .gridColumnAlignment(.trailing)
                     .accessibilityLabeledPair(role: .label, id: "windowAlpha", in: self.accessibility)
                 
-                HStack {
+                HStack(alignment: .firstTextBaseline) {
                     Slider(value: self.windowAlphaBinding, in: Self.windowAlphaRange) {
                         EmptyView()
                     } currentValueLabel: {

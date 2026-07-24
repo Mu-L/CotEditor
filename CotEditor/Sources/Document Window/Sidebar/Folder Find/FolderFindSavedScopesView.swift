@@ -87,9 +87,9 @@ struct FolderFindSavedScopesView: View {
             }
             .animation(.default, value: self.scopes.keys)
             .listStyle(.bordered)
-            .frame(minWidth: 240, minHeight: 180)
+            .frame(minWidth: 140, idealWidth: 240, minHeight: 180)
             
-            HStack(alignment: .firstTextBaseline) {
+            HStack {
                 Spacer()
                 
                 Button(role: .close) {

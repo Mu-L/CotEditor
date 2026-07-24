@@ -104,9 +104,9 @@ struct EncodingListView: View {
             .scrollContentBackground(.hidden)
             .background(.fill.quaternary, in: .rect(cornerRadius: 8))
             .environment(\.defaultMinListRowHeight, 14)
-            .frame(minHeight: 250, idealHeight: 250)
+            .frame(minHeight: 100, idealHeight: 250)
             
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Button(String(localized: "Action.restoreDefaults.label", defaultValue: "Restore Defaults"), action: self.model.restore)
                     .disabled(!self.model.canRestore)
                 
@@ -159,7 +159,7 @@ struct EncodingListView: View {
         .onAppear {
             self.model.undoManager = self.undoManager
         }
-        .frame(minWidth: 360, idealWidth: 440, maxWidth: 1000, idealHeight: 460, maxHeight: .infinity)
+        .frame(minWidth: 360, idealWidth: 440)
     }
 }
 

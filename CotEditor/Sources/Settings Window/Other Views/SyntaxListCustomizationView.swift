@@ -81,7 +81,7 @@ struct SyntaxListCustomizationView: View {
         .onAppear {
             self.hiddenItems = Set(UserDefaults.standard[.hiddenSyntaxes])
         }
-        .frame(minWidth: 260, idealWidth: 360, maxWidth: 1000, maxHeight: .infinity)
+        .frame(minWidth: 260, idealWidth: 360)
     }
 }
 

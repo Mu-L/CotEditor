@@ -90,7 +90,7 @@ struct SyntaxMappingConflictView: View {
         .onExitCommand {
             self.dismiss()
         }
-        .frame(minWidth: 360, idealWidth: 360, maxWidth: 1000, minHeight: 260, idealHeight: 460)
+        .frame(minWidth: 360, idealWidth: 360)
     }
 }
 
@@ -129,6 +129,7 @@ private struct ConflictTable: View {
                 self.items.sort(using: newValue)
             }
             .tableStyle(.bordered)
+            .frame(minHeight: 80, idealHeight: 120)
             
         } header: {
             Text(self.name).fontWeight(.medium)
