@@ -194,10 +194,12 @@
       "json",
       "jsonl",
       "geojson",
-      "resolved",
       "cottheme",
       "cotrpl",
       "xcstrings"
+    ],
+    "filenames" : [
+      "Package.resolved"
     ]
   },
   "Java" : {
