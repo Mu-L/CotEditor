@@ -66,11 +66,10 @@ extension MultiCursorEditing {
         assert(!replacementRanges.isEmpty)
         
         let replacementStrings = [String](repeating: string, count: replacementRanges.count)
-        let undoRanges = self.insertionRanges
+        
+        self.setSelectedRangesWithUndo(self.insertionRanges)
         
         guard self.shouldChangeText(inRanges: replacementRanges as [NSValue], replacementStrings: replacementStrings) else { return false }
-        
-        self.setSelectedRangesWithUndo(undoRanges)
         
         let attributedString = NSAttributedString(string: string, attributes: self.typingAttributes)
         let stringLength = attributedString.length

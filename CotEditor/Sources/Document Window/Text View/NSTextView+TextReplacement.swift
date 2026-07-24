@@ -78,14 +78,13 @@ extension NSTextView {
             let textStorage = self.textStorage
         else { return false }
         
+        // register undo for the selection restoration
         // -> Prefer using `rangesForUserTextChange` to save also multi-insertion points.
         let undoRanges = (self.rangesForUserTextChange ?? self.selectedRanges).map(\.rangeValue)
+        self.setSelectedRangesWithUndo(undoRanges)
         
         // tell textEditor about beginning of the text processing
         guard self.shouldChangeText(inRanges: ranges as [NSValue], replacementStrings: strings) else { return false }
-        
-        // register redo for text selection
-        self.setSelectedRangesWithUndo(undoRanges)
         
         // set action name
         if let actionName {
@@ -138,6 +137,11 @@ extension NSTextView {
     /// - Parameter ranges: The selected ranges.
     final func setSelectedRangesWithUndo(_ ranges: [NSRange]) {
         
+        let undoRanges = (self.rangesForUserTextChange ?? self.selectedRanges).map(\.rangeValue)
+        self.undoManager?.registerUndo(withTarget: self) { target in
+            target.setSelectedRangesWithUndo(undoRanges)
+        }
+        
         if let self = self as? any MultiCursorEditing,
            let set = self.prepareForSelectionUpdate(ranges)
         {
@@ -145,10 +149,6 @@ extension NSTextView {
             self.insertionLocations = set.insertionLocations
         } else {
             self.selectedRanges = ranges as [NSValue]
-        }
-        
-        self.undoManager?.registerUndo(withTarget: self) { target in
-            target.setSelectedRangesWithUndo(ranges)
         }
     }
     
