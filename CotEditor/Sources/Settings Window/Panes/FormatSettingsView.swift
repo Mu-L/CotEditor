@@ -64,6 +64,7 @@ struct FormatSettingsView: View {
     @State private var syntaxNames: [String] = []
     @State private var handledEncodingListRequestID: UUID?
     
+    @State private var isEncodingListPresented = false
     
     private var fileEncoding: Binding<FileEncoding> {
         
@@ -77,8 +78,6 @@ struct FormatSettingsView: View {
                 self.saveUTF8BOM = $0.withUTF8BOM
             })
     }
-    
-    @State private var isEncodingListPresented = false
     
     
     var body: some View {
