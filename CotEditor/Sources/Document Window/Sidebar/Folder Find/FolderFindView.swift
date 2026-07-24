@@ -671,3 +671,11 @@ private extension AttributedString {
         }
     }
 }
+
+
+// MARK: - Preview
+
+#Preview {
+    FolderFindControlView(model: FolderFinder(document: .init()))
+        .scenePadding()
+}

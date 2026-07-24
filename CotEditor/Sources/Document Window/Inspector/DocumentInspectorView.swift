@@ -396,7 +396,7 @@ private extension ControlSize {
 }
 
 
-#Preview(traits: .fixedLayout(width: 240, height: 520)) {
+#Preview {
     let model = MockedModel(
         attributes: .init(
             creationDate: .now,
@@ -420,9 +420,11 @@ private extension ControlSize {
     model.countResult?.character = "🐈‍⬛"
     
     return DocumentInspectorView(model: model)
+        .frame(width: 240)
 }
 
 
-#Preview("Empty", traits: .fixedLayout(width: 240, height: 520)) {
+#Preview {
     DocumentInspectorView(isPresented: true, model: MockedModel())
+        .frame(width: 240)
 }

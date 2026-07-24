@@ -371,3 +371,8 @@ private extension DocumentConflictOption {
     GeneralSettingsView(showsUpdaterSettings: true)
         .scenePadding()
 }
+
+#Preview("Warnings Setting") {
+    WarningsSettingView()
+        .scenePadding()
+}

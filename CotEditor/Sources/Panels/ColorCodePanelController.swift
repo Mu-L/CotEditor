@@ -310,4 +310,5 @@ private extension ColorCodeType {
 #Preview {
     ColorCodePanelAccessory(colorCode: "#006699", panel: .shared)
         .frame(width: 240)
+        .scenePadding()
 }

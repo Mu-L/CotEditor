@@ -162,5 +162,4 @@ private struct EqualWidthHStack: Layout {
 #Preview {
     SubmitButtonGroup(action: {})
         .scenePadding()
-        .frame(width: 200)
 }

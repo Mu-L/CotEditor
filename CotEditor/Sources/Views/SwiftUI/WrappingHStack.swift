@@ -156,7 +156,7 @@ private struct WrappingHStackLayout: Layout {
                 .background(.selection, in: .rect(cornerRadius: 3))
         }
     }
-    .border(.separator)
+    .border(.quaternary)
     .scenePadding()
     .frame(width: 180)
 }
