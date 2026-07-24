@@ -98,7 +98,7 @@ import Defaults
 
 private struct ColorCodePanelAccessory: View {
     
-    @State private var colorCode: String = ""
+    @State private var colorCode: String
     @AppStorage(.colorCodeType) private var type: Int
     
     private var panel: NSColorPanel
@@ -115,6 +115,8 @@ private struct ColorCodePanelAccessory: View {
             self.colorCode = colorCode
             self.type = type.rawValue
             panel.color = color
+        } else {
+            self.colorCode = ""
         }
     }
     
