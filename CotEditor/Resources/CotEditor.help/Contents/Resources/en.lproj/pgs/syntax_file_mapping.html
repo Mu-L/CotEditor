@@ -25,16 +25,16 @@
 <ol>
 	<li>
 		<p><em>Filename</em>:</p>
-		<p>CotEditor first tries to determine the syntax from the entire filename. Case is generally ignored; however, case-matching filenames are prioritized when multiple syntaxes are found.</p>
+		<p>CotEditor first tries to determine the syntax from the entire filename. Filenames are case-sensitive.</p>
 		<ul>
 			<li><p>.htaccess → Apache</p></li>
 			<li><p>Makefile → Makefile</p></li>
 		</ul>
 	</li>
-
+	
 	<li>
 		<p><em>File extension</em>:</p>
-		<p>If no syntax is found from the filename, CotEditor then tries to determine the syntax from the file extension. Case is generally ignored; however, case-matching extensions are prioritized when multiple syntaxes are found.</p>
+		<p>If no syntax is found from the filename, CotEditor then tries to determine the syntax from the file extension. Extensions are case-insensitive.</p>
 		<p>For example:</p>
 		<ul>
 			<li><p>.html → HTML</p></li>
