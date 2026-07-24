@@ -2,11 +2,7 @@
   "fileMap" : {
     "extensions" : [
       "json",
-      "jsonl",
-      "geojson",
-      "cottheme",
-      "cotrpl",
-      "xcstrings"
+      "jsonl"
     ],
     "filenames" : [
       "Package.resolved"
@@ -18,6 +14,6 @@
     "distributionURL" : "https://coteditor.com",
     "lastModified" : "2026-07-24",
     "license" : "Same as CotEditor",
-    "version" : "2.0.1"
+    "version" : "2.0.2"
   }
 }

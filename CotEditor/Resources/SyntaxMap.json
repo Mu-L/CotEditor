@@ -192,11 +192,7 @@
   "JSON" : {
     "extensions" : [
       "json",
-      "jsonl",
-      "geojson",
-      "cottheme",
-      "cotrpl",
-      "xcstrings"
+      "jsonl"
     ],
     "filenames" : [
       "Package.resolved"

@@ -81,6 +81,17 @@ actor BundledSyntaxTests {
     }
     
     
+    @Test func containHardcodedSyntaxes() throws {
+        
+        let syntaxNames = try Self.loadSyntaxes().keys
+        
+        // syntax names hardcoded for the automatic syntax detection
+        #expect(syntaxNames.contains(SyntaxName.markdown))
+        #expect(syntaxNames.contains(SyntaxName.json))
+        #expect(syntaxNames.contains("XML"))  // used in SyntaxMappingTable.syntaxName(forContent:)
+    }
+    
+    
     @Test func xmlSyntax() throws {
         
         let syntax = try Self.loadSyntax(named: "XML")

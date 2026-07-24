@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="keywords" content="syntax, file mapping, extension, shebang, interpreter">
+	<meta name="keywords" content="syntax, file mapping, extension, file type, shebang, interpreter">
 	<link rel="stylesheet" href="../../Shared/sty/standard.css">
 	<script defer src="../../Shared/js/toc.js"></script>
 	
@@ -60,6 +60,15 @@
 		<p>For example:</p>
 		<ul>
 			<li><p><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</code> → XML</p></li>
+		</ul>
+	</li>
+	
+	<li>
+		<p><em>File type</em>:</p>
+		<p>If no corresponding syntax is found up to this point but the document has a file type that macOS identifies as a kind of JSON, CotEditor automatically applies the JSON syntax.</p>
+		<p>For example:</p>
+		<ul>
+			<li><p>.geojson → JSON</p></li>
 		</ul>
 	</li>
 	

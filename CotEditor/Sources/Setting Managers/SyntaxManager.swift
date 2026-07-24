@@ -36,6 +36,7 @@ enum SyntaxName {
     
     static let none = "None"
     static let markdown = "Markdown"
+    static let json = "JSON"
 }
 
 
@@ -120,7 +121,10 @@ enum SyntaxName {
     nonisolated func settingName(documentName filename: String, content: String) -> String? {
         
         let table = self.mappingTable.withLock(\.self)
-        return table.syntaxName(forFilename: filename) ?? table.syntaxName(forContent: content)
+        
+        return table.syntaxName(forFilename: filename)
+            ?? table.syntaxName(forContent: content)
+            ?? Self.settingName(forFileTypeOf: filename)
     }
     
     
@@ -131,7 +135,10 @@ enum SyntaxName {
     /// - Returns: A setting name, or `nil` if no match is found.
     nonisolated func settingName(documentName filename: String) -> String? {
         
-        self.mappingTable.withLock(\.self).syntaxName(forFilename: filename)
+        let table = self.mappingTable.withLock(\.self)
+        
+        return table.syntaxName(forFilename: filename)
+            ?? Self.settingName(forFileTypeOf: filename)
     }
     
     
@@ -302,5 +309,25 @@ enum SyntaxName {
         
         let mappingTable = SyntaxMappingTable(syntaxNames: settingNames, maps: maps)
         self.mappingTable.withLock { $0 = mappingTable }
+    }
+    
+    
+    /// Returns the syntax name determined from the file type of the given filename.
+    ///
+    /// - Parameters:
+    ///   - filename: The filename used to detect the corresponding syntax.
+    /// - Returns: A setting name, or `nil` if no match is found.
+    private nonisolated static func settingName(forFileTypeOf filename: String) -> String? {
+        
+        guard
+            let pathExtension = filename.pathExtension,
+            let type = UTType(filenameExtension: pathExtension)
+        else { return nil }
+        
+        if type.conforms(to: .json) {
+            return SyntaxName.json
+        }
+        
+        return nil
     }
 }

@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="keywords" content="シンタックス, ファイルマッピング, ファイル関連付け, 拡張子, シェバン, シバン, インタープリタ">
+	<meta name="keywords" content="シンタックス, ファイルマッピング, ファイル関連付け, 拡張子, ファイルタイプ, シェバン, シバン, インタープリタ">
 	<link rel="stylesheet" href="../../Shared/sty/standard.css">
 	<script defer src="../../Shared/js/toc.js"></script>
 	
@@ -60,6 +60,15 @@
 		<p>以下に例を挙げます:</p>
 		<ul>
 			<li><p><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</code> → XML</p></li>
+		</ul>
+	</li>
+	
+	<li>
+		<p><em>ファイルタイプ</em>:</p>
+		<p>ここまでで対応するシンタックスが見つからないとき、書類のファイルタイプがmacOSでJSONの一種として認識される場合は、自動的にJSONシンタックスを適用します。</p>
+		<p>以下に例を挙げます:</p>
+		<ul>
+			<li><p>.geojson → JSON</p></li>
 		</ul>
 	</li>
 	
