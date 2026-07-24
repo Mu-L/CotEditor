@@ -54,8 +54,10 @@
 
 ### Fixes
 
+- Fix an issue where the application could crash or freeze when undoing an edit that shortened the document, such as the trimming of trailing whitespace.
 - Fix an issue where the tab width customized for a document was not applied when printing.
 - Fix an issue where the insertion point could move to an incorrect column when extending a selection upward from the end of the document.
+- Fix an issue where the Surround Selection With > Custom dialog did not show the last used strings.
 - Fix an issue where the window size setting was not included in the exported settings archive (Thanks to offyotto!).
 
 

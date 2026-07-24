@@ -35,16 +35,23 @@ struct CustomSurroundView: View {
     }
     
     
+    private enum AppStorageKey {
+        
+        static let beginString = "beginCustomSurroundString"
+        static let endString = "endCustomSurroundString"
+    }
+    
+    
     @Environment(\.dismiss) private var dismiss
     @Environment(\.resetFocus) private var resetFocus
     
-    @AppStorage("beginCustomSurroundString") private var defaultBeginString: String?
-    @AppStorage("endCustomSurroundString") private var defaultEndString: String?
+    @AppStorage(AppStorageKey.beginString) private var defaultBeginString: String?
+    @AppStorage(AppStorageKey.endString) private var defaultEndString: String?
     
     @FocusState private var focus: Focus?
     @Namespace private var namespace
     
-    @State private var pair: Pair<String> = .init("", "")
+    @State private var pair: Pair<String>
     private var completionHandler: (_ pair: Pair<String>) -> Void
     
     
@@ -59,10 +66,12 @@ struct CustomSurroundView: View {
         
         self.completionHandler = completionHandler
         
-        if let pair {
-            self.pair = pair
-        } else if let begin = self.defaultBeginString {
-            self.pair = Pair(begin, self.defaultEndString ?? "")
+        self.pair = if let pair {
+            pair
+        } else if let begin = UserDefaults.standard.string(forKey: AppStorageKey.beginString) {
+            Pair(begin, UserDefaults.standard.string(forKey: AppStorageKey.endString) ?? "")
+        } else {
+            Pair("", "")
         }
     }
     
