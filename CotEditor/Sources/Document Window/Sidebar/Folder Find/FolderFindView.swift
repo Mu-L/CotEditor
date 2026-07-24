@@ -430,18 +430,22 @@ private struct FolderFindOverlayView: View {
                                     defaultValue: "Searching in folder…", table: "Document"))
                 
             case .finished(let summary) where summary.metrics.matchCount == 0:
-                UnavailableView(title: String(localized: "FolderFind.SearchState.finished.zero.label",
-                                              defaultValue: "No Results", table: "Document"),
-                                systemImage: "magnifyingglass",
-                                description: String(localized: "FolderFind.SearchState.finished.zero.description",
-                                                    defaultValue: "No matches for “\(summary.metrics.findString)” were found.",
-                                                    table: "Document"))
+                ContentUnavailableView(
+                    String(localized: "FolderFind.SearchState.finished.zero.label",
+                           defaultValue: "No Results", table: "Document"),
+                    systemImage: "magnifyingglass",
+                    description: Text(String(localized: "FolderFind.SearchState.finished.zero.description",
+                                             defaultValue: "No matches for “\(summary.metrics.findString)” were found.",
+                                             table: "Document")).font(.body)
+                )
                 
             case .failed(let error):
-                UnavailableView(title: String(localized: "FolderFind.SearchState.failed.label",
-                                              defaultValue: "Search Failed", table: "Document"),
-                                systemImage: "exclamationmark.triangle",
-                                description: error.localizedDescription)
+                ContentUnavailableView(
+                    String(localized: "FolderFind.SearchState.failed.label",
+                           defaultValue: "Search Failed", table: "Document"),
+                    systemImage: "exclamationmark.triangle",
+                    description: Text(error.localizedDescription).font(.body)
+                )
                 
             case .idle, .finished:
                 EmptyView()
@@ -550,30 +554,6 @@ private struct FolderFindFileResultView: View {
             let index = String.Index(utf16Offset: self.rangeInLine.lowerBound, in: self.line)
             
             return self.line.truncatedHead(until: index, offset: Self.truncationHeadOffset)
-        }
-    }
-}
-
-
-private struct UnavailableView: View {
-    
-    var title: String
-    var systemImage: String
-    var description: String
-    
-    
-    var body: some View {
-        
-        ContentUnavailableView {
-            Label {
-                Text(self.title)
-                    .font(.system(size: 16))
-                    .fontWeight(.medium)
-            } icon: {
-                Image(systemName: self.systemImage)
-            }
-        } description: {
-            Text(self.description)
         }
     }
 }
