@@ -71,8 +71,8 @@ struct FolderFindFileScopeView: View {
     ///   - completionHandler: The action to perform when the editing is accepted.
     init(fileScope: FileScope, name: String? = nil, savedScopeNames: Set<String>, completionHandler: @escaping (_ fileScope: FileScope, _ name: String?) -> Void) {
         
-        self._fileScope = State(initialValue: fileScope)
-        self._name = State(initialValue: name ?? "")
+        self.fileScope = fileScope
+        self.name = name ?? ""
         self.originalName = name
         self.savedScopeNames = savedScopeNames
         self.completionHandler = completionHandler
