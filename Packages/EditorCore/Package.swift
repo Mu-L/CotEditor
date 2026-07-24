@@ -1,4 +1,4 @@
-// swift-tools-version: 6.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
@@ -26,21 +26,6 @@ let package = Package(
             "URLUtils",
             "ValueRange",
         ]),
-        
-        .library(name: "CharacterInfo", targets: ["CharacterInfo"]),
-        .library(name: "Defaults", targets: ["Defaults"]),
-        .library(name: "DocumentFile", targets: ["DocumentFile"]),
-        .library(name: "FileEncoding", targets: ["FileEncoding"]),
-        .library(name: "FolderFind", targets: ["FolderFind"]),
-        .library(name: "Invisible", targets: ["Invisible"]),
-        .library(name: "LineEnding", targets: ["LineEnding"]),
-        .library(name: "LineSort", targets: ["LineSort"]),
-        .library(name: "SemanticVersioning", targets: ["SemanticVersioning"]),
-        .library(name: "StringUtils", targets: ["StringUtils"]),
-        .library(name: "TextClipping", targets: ["TextClipping"]),
-        .library(name: "TextEditing", targets: ["TextEditing"]),
-        .library(name: "TextFind", targets: ["TextFind"]),
-        .library(name: "URLUtils", targets: ["URLUtils"]),
     ],
     dependencies: [
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: Version(0, 62, 0)),
